@@ -51,7 +51,8 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
-
+/*
+//this has all changed in 
 $app->configureMonologUsing(function ($monolog) {
 
         $pdo = \DB::connection()->getPdo();
@@ -62,6 +63,9 @@ $app->configureMonologUsing(function ($monolog) {
                 //guess not. lets us the default database for the app.
                 $db = env('DB_DATABASE');
         }
+
+*/
+
 
 	//TODO this should automatically create the log table.. but for now.. here they are: 
 
