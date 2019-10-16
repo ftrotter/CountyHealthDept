@@ -52,7 +52,6 @@ $app->singleton(
 |
 */
 /*
-//this has all changed in 
 $app->configureMonologUsing(function ($monolog) {
 
         $pdo = \DB::connection()->getPdo();
@@ -63,10 +62,7 @@ $app->configureMonologUsing(function ($monolog) {
                 //guess not. lets us the default database for the app.
                 $db = env('DB_DATABASE');
         }
-
 */
-
-
 	//TODO this should automatically create the log table.. but for now.. here they are: 
 
 /*
@@ -103,7 +99,6 @@ ALTER TABLE `log_context`
 ALTER TABLE `log_message`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-*/
 
         $extra_fields = []; //this is not really nessecary anymore should redesign the logger not to use it..
         //Create MysqlHandler
@@ -111,7 +106,7 @@ ALTER TABLE `log_message`
 
         $monolog->pushHandler($mySQLHandler);
 });
-
+*/
 
 
 return $app;
