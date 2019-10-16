@@ -1,44 +1,36 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "ftrotter/lore",
+    "description": "Lore Commander MTG Data Analysis Project",
+    "keywords": [
+        "MTG",
+        "zermelo"
+    ],
     "license": "MIT",
     "type": "project",
     "repositories": [
-    	{
-        	"type": "vcs",
-		"url" : "git@github.com:CareSet/ZermeloBladeGraph.git"
-    	}
+        {
+            "type": "vcs",
+            "url": "git@github.com:CareSet/ZermeloBladeGraph.git"
+        }
     ],
     "require": {
-        "php": ">=7.0.0",
-        "bestmomo/nice-artisan": "^1.1",
-        "careset/zermelo": "dev-master",
-        "careset/zermelobladecard": "dev-master",
+        "php": ">=7.2.0",
+        "careset/zermelo_installer": "dev-master",
         "careset/zermelobladegraph": "dev-master",
-        "careset/zermelobladetabular": "dev-master",
-        "careset/zermelobladetreecard": "dev-master",
-        "fideloper/proxy": "~3.3",
+        "fideloper/proxy": "~4.0",
         "ftrotter/two-table-monolog-mysql": "dev-master",
-        "laravel/framework": "5.5.*",
-        "laravel/socialite": "^3.0",
-        "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.4.0",
-        "nesbot/carbon": "^1.22",
+        "laravel/framework": "^6.0",
+        "laravel/helpers": "^1.0@dev",
         "phpunit/phpunit": "^7.3",
-        "proai/laravel-handlebars": "^1.7",
+        "proai/laravel-handlebars": "^1.9",
         "pusher/pusher-php-server": "^4.0",
-        "smartystreets/phpsdk": "^4.5.7",
-        "spatie/laravel-tail": "^2.0",
         "sunra/php-simple-html-dom-parser": "^1.5",
         "superbalist/flysystem-google-storage": "^7.0",
-        "tymon/jwt-auth": "^0.5.12",
-        "vlucas/phpdotenv": "^2.4",
-        "wamania/php-stemmer": "^1.2",
-        "wrapi/slack": "^1.0"
+        "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {
         "careset/durc": "dev-master",
+        "composer/composer": "^1.9",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0"
@@ -59,8 +51,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
@@ -75,10 +66,8 @@
             "@php artisan package:discover"
         ]
     },
+    "minimum-stability": "dev",
     "config": {
-        "github-oauth": {
-
-        },
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
