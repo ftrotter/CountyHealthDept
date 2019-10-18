@@ -11,6 +11,10 @@
 	* etc
 	* file_get_contents('Your healthchecks.io health URL');
 
+
+we are presuming this is going to go into crontab -e
+use crontab -e to avoid using root-level permissions with cron whenever possible.. as per: 
+https://askubuntu.com/questions/609850/what-is-the-correct-way-to-edit-a-crontab-file
 */	
 	$cmds = [];
 
