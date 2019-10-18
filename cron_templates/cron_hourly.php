@@ -27,7 +27,7 @@ https://askubuntu.com/questions/609850/what-is-the-correct-way-to-edit-a-crontab
 		//we use system because that will cause the results to be echoed to the termnal and therefore logged..
 		system($this_cmd, $return_var);
 		if($return_var > 0){
-			echo "$this_command returned $return_var which is an error. Stopping\n";
+			echo "$this_cmd returned $return_var which is an error. Stopping\n";
 			exit(); //Note that it is critical to end the process if a part ended in error... 
 				//under no circumstance should we fall through to the hc-ping command file_get_contents... 
 				//because doing that will make it seem like the code is working... even if there is a crashing error.
