@@ -34,10 +34,6 @@ return [
             'driver' => 'apc',
         ],
 
-        'array' => [
-            'driver' => 'array',
-        ],
-
         'database' => [
             'driver' => 'database',
             'table' => 'cache',
