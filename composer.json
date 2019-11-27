@@ -1,22 +1,26 @@
 {
-    "name": "ftrotter/lore",
-    "description": "Lore Commander MTG Data Analysis Project",
+    "name": "careset/eden",
+    "description": "CareSet Something",
     "keywords": [
-        "MTG",
-        "zermelo"
+        "careset"
     ],
-    "license": "MIT",
+    "license": "proprietary",
     "type": "project",
     "repositories": [
         {
             "type": "vcs",
             "url": "git@github.com:CareSet/ZermeloBladeGraph.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:CareSet/CareSetJWTAuthClient.git"
         }
     ],
     "require": {
         "php": ">=7.2.0",
         "careset/zermelo_installer": "dev-master",
         "careset/zermelobladegraph": "dev-master",
+        "careset/caresetjwtauthclient": "dev-master",
         "fideloper/proxy": "~4.0",
         "ftrotter/two-table-monolog-mysql": "dev-master",
         "laravel/framework": "^6.0",
