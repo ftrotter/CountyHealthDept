@@ -1,6 +1,10 @@
 <?php
 	//this is the script that sets up Eden...
 
+//TODO This script should check for a properly setup zermelo, and user auth system before running the installation...
+// so that we can avoid the stage where we get errors because _zermelo_cache/_zermelo_config are not there
+// and where JWT security does not enable because we cannot save users...
+
 	$composer_locations = [
 		'/bin/composer',
 		'/usr/bin/composer',
@@ -30,6 +34,15 @@
 	$real_user = getenv('SUDO_USER');
 
 	echo "running as root, but from |$real_user| unix account\n";
+
+	$composer_config_dir = "/home/$real_user/.composer";
+
+	
+	if(!file_exists($composer_config_dir)){
+		echo "Error: The directory $composer_config_dir needs to exist and be writable to save authorizations etc... \n";
+		exit();
+	}
+
 
 
 	$cmds = [
