@@ -1,6 +1,25 @@
 <?php
 	//this is the script that sets up Eden...
 
+	$composer_locations = [
+		'/bin/composer',
+		'/usr/bin/composer',
+		];
+
+	//we assume its missing
+	$is_got_composer = false;
+
+	foreach($composer_locations as $is_it_here){
+		if(file_exists($is_it_here)){
+			$is_got_composer = true;
+		}
+	}
+
+	if(!$is_got_composer){
+		echo "Error: I could not find composer globally installed\n";
+		exit();
+	}
+
 	$userinfo = posix_getpwuid(posix_geteuid());
 
 	if(!$userinfo['name'] == 'root'){
