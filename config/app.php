@@ -5,7 +5,12 @@ return [
 
     'debug_blacklist' => [
         '_ENV' => [
-                'APP_KEY',
+		'CARESET_TOKEN', 	
+		'CARESET_JWT_LOGIN', 	
+		'CARESET_JWT_LOGOUT', 	
+		'CARESET_JWT_CALLBACK', 	
+		'CARESET_JWT_RETURN',
+		'APP_KEY',
                 'DB_PASSWORD',
                 'REDIS_PASSWORD',
                 'MAIL_PASSWORD',
