@@ -39,7 +39,7 @@
 
 	$composer_config_dir = "/home/$real_user/.composer";
 
-	
+	echo "Checking for $composer_config_dir\n";	
 	if(!file_exists($composer_config_dir)){
 		echo "Error: The directory $composer_config_dir needs to exist and be writable to save authorizations etc... \n";
 		exit();
@@ -48,12 +48,15 @@
 
 
 	$cmds = [
+		"sudo chown $real_user:$real_user $composer_config_dir -R",
 		"sudo -u $real_user composer update",
 		"sudo -u $real_user php artisan key:generate",
 		"sudo -u $real_user cp ./templates/ReadMe.template.md README.md",
 		"sudo -u $real_user php artisan vendor:publish --provider='CareSet\DURC\DURCServiceProvider'",
 		"sudo -u $real_user php artisan vendor:publish --tag=laravel-handlebars",
-		"chmod g+w storage/* -R", //this will actually be run as root!!
+		"chmod g+w storage/* -R", //this will actually be run as root!! and 
+		"chown www-data:www-data storage/* -R", //this will 
+		"usermod -a -G www-data $real_user",
 		];
 
 
@@ -67,6 +70,10 @@
 		echo "Running $this_command\n";
 		system($this_command);
 	}
+
+
+echo "You need to run the zermelo installation now... since it is interactive\n ./artisan zermelo:install\n\n";
+
 
 /*
 // for now, we are ignoring the installation of zermelo, because it requires the database to be configured
