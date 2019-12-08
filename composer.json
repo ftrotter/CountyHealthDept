@@ -22,7 +22,9 @@
         "careset/zermelobladegraph": "dev-master",
         "careset/caresetjwtauthclient": "dev-master",
         "fideloper/proxy": "~4.0",
-        "ftrotter/two-table-monolog-mysql": "dev-master",
+        "erusev/parsedown": "^1.7",
+        "facade/ignition": "^1.0@dev",
+	"ftrotter/two-table-monolog-mysql": "dev-master",
         "laravel/framework": "^6.0",
         "laravel/helpers": "^1.0@dev",
         "phpunit/phpunit": "^7.3",
@@ -35,7 +37,6 @@
     "require-dev": {
         "careset/durc": "dev-master",
         "composer/composer": "^1.9",
-        "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0"
     },
