@@ -140,6 +140,71 @@ class GenericLinker extends Controller
 			//so the class does not exist yet. Thats fine.
 			//we support autolinking as long as the left, right and tag tables exist...
 			//so see if we have a database table.
+			return $this->showSQLView($durc_type_left,$durc_type_right,$durc_type_tag);
+		}
+		//here we know that we have DURC classes for all 4 of the relevant data contructs...
+		//the list of tags, the object that sits to the right and the left of the tag relation...
+		//we are ready to show the Select2 heavy interface that will allow for really fast tagging...
+
+		
+		
+		$view_data = [
+			'durc_type_left' => $durc_type_left,
+			'durc_type_right' => $durc_type_right,
+			'durc_type_tag' => $durc_type_tag,
+			'durc_left_id' => $durc_left_id,
+			'durc_right_id' => $durc_right_id,
+			'durc_tag_id' => $durc_tag_id,
+			'durc_linker' => $link_table,
+			'durc_linker' => $link_table,
+		];
+
+		return view('linker.main',$view_data);
+
+	}
+
+	//we have this as a second function so that we can see this anytime we want
+	//but in production this code will get called by the linkForm function... 
+	public function showSQLView($durc_type_left,$durc_type_right,$durc_type_tag){
+
+
+		$left_class = "\App\\$durc_type_left";
+		$right_class = "\App\\$durc_type_right";
+		$tag_class = "\App\\$durc_type_tag";
+		
+		if(!class_exists($left_class)){
+			return("Error $durc_type_left does not exist as DURC");
+		}
+		if(!class_exists($right_class)){
+			return("Error $durc_type_right does not exist as DURC");
+		}
+		if(!class_exists($tag_class)){
+			return("Error $durc_type_tag does not exist as DURC");
+		}
+
+		$pdo = \DB::connection()->getPdo();
+
+		$db = \Config::get('database.connections.'.\Config::get('database.default').'.database');
+		//this returns null for some reason? But this is where this come from..
+		
+		//Allow for a custom linker database...
+		$db = env('LINKER_DATABASE',false);
+		if(!$db){
+			$db = env('DB_DATABASE');
+		}
+		$pdo->query("USE $db");
+
+		$link_table = $durc_type_left."_$durc_type_right"."_$durc_type_tag";
+
+		$durc_tag_id = $durc_type_tag . '_id';
+		$durc_left_id = $durc_type_left . '_id';
+		$durc_right_id = $durc_type_right . '_id';
+
+		if($durc_type_right == $durc_type_left){
+			//this is OK, but the field names need to be changed.
+			$durc_right_id = 'second_' . $durc_type_right . '_id';
+		}
+
 
 			//so it is possible that the table could exist  at this point..
 			$test_sql  =  "
@@ -158,22 +223,20 @@ WHERE table_schema = '$db'
 				}
 			}
 
-			if($is_db_exists){
-				$message = "The linking table exists, but the DURC classes do not. Run the DURC generator";
-			}else{
 
-				$is_tag_distinct = true;
-				if($durc_type_left  == $durc_type_tag){
-					$is_tag_distinct = false;
-				}
-				if($durc_type_right  == $durc_type_tag){
-					$is_tag_distinct = false;
-				}
+			$is_tag_distinct = true;
+			if($durc_type_left  == $durc_type_tag){
+				$is_tag_distinct = false;
+			}
+			if($durc_type_right  == $durc_type_tag){
+				$is_tag_distinct = false;
+			}
 
-				if(!$is_tag_distinct){
-					echo "Error: While it is possible to have the same table on the left and right of the linker, the tag column must not be the same as either the left or the right";
-					exit();
-				}
+			if(!$is_tag_distinct){
+				echo "Error: While it is possible to have the same table on the left and right of the linker, the tag column must not be the same as either the left or the right";
+				exit();
+			}
+
 		$durc_tag_name_field = $tag_class::getNameField();
 		$durc_left_name_field = $left_class::getNameField();
 		$durc_right_name_field = $right_class::getNameField();
@@ -199,69 +262,51 @@ CREATE TABLE IF NOT EXISTS $db.$link_table  (
 ## Here is the SQL to create the graph browser
 
 SELECT 
-	$durc_right_id AS source_id,
-	$durc_right_name_field AS source_name,
-	100 AS source_size,
-	'$durc_type_right' AS source_type,
-	'$durc_type_right' AS source_group,
+	CONCAT('$durc_type_right','_',$durc_right_id) AS source_id,
+	rightside.$durc_right_name_field AS source_name,
+	500 AS source_size,
+	'$durc_type_right                             ' AS source_type,
+	'$durc_type_right                             ' AS source_group,
 	0 AS source_longitude,
 	0 AS source_latitude,
 	CONCAT('/DURC/json/$durc_type_right/',$durc_right_id) AS source_json_url,
 	'' AS source_img,
 
-	$durc_left_id AS target_id,
-	$durc_left_name_field AS target_name,
-	100 AS target_size,
-	'$durc_type_left' AS target_type,
-	'$durc_type_left' AS target_group,
+	CONCAT('$durc_type_left','_',$durc_left_id) AS target_id,
+	leftside.$durc_left_name_field AS target_name,
+	500 AS target_size,
+	'$durc_type_left                              ' AS target_type,
+	'$durc_type_left                              ' AS target_group,
 	0 AS target_longitude,
 	0 AS target_latitude,
-	CONCAT('/DURC/json/$durc_type_left/',$durc_left_id) AS source_json_url,
+	CONCAT('/DURC/json/$durc_type_left/',$durc_left_id) AS target_json_url,
 	'' AS target_img,
 		
-	50 AS weight,
+	100 AS weight,
 	$durc_tag_name_field AS link_type,
 	1 AS query_num
 
 FROM $db.$link_table
-JOIN $db.$durc_type_tag ON 
-	$durc_type_tag.id =
+JOIN $db.$durc_type_tag AS tag ON 
+	tag.id =
 	$durc_tag_id
-JOIN $db.$durc_type_left ON
-	$durc_type_left.id =
+JOIN $db.$durc_type_left AS leftside ON
+	leftside.id =
 	$durc_left_id 
-JOIN $db.$durc_type_right ON 
-	$durc_type_right.id =
+JOIN $db.$durc_type_right AS rightside ON 
+	rightside.id =
 	$durc_right_id 
 
 ";
-			}
 			// we could just run this SQL... but.. 
 			// this is horribly risky from a security standpoint... leading to obvious DOS
 			//instead we throw this back to the user...
 			//$pdo->query($messageg);
 			return view('linker.create_table',['message' => $message]);	
-		}
-
-		//here we know that we have DURC classes for all 4 of the relevant data contructs...
-		//the list of tags, the object that sits to the right and the left of the tag relation...
-		//we are ready to show the Select2 heavy interface that will allow for really fast tagging...
-
-		
-		
-		$view_data = [
-			'durc_type_left' => $durc_type_left,
-			'durc_type_right' => $durc_type_right,
-			'durc_type_tag' => $durc_type_tag,
-			'durc_left_id' => $durc_left_id,
-			'durc_right_id' => $durc_right_id,
-			'durc_tag_id' => $durc_tag_id,
-			'durc_linker' => $link_table,
-			'durc_linker' => $link_table,
-		];
-
-		return view('linker.main',$view_data);
-
 	}
+
+
+
+
 
 }
