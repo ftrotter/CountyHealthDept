@@ -96,15 +96,18 @@ class GenericLinker extends Controller
 	public function linkForm($durc_type_left,$durc_type_right,$durc_type_tag){
 
 
-
-		if(!class_exists("\App\\$durc_type_left")){
-			return("Error $durc_type_left does not exist");
+		$left_class = "\App\\$durc_type_left";
+		$right_class = "\App\\$durc_type_right";
+		$tag_class = "\App\\$durc_type_tag";
+		
+		if(!class_exists($left_class)){
+			return("Error $durc_type_left does not exist as DURC");
 		}
-		if(!class_exists("\App\\$durc_type_right")){
-			return("Error $durc_type_right does not exist");
+		if(!class_exists($right_class)){
+			return("Error $durc_type_right does not exist as DURC");
 		}
-		if(!class_exists("\App\\$durc_type_tag")){
-			return("Error $durc_type_tag does not exist");
+		if(!class_exists($tag_class)){
+			return("Error $durc_type_tag does not exist as DURC");
 		}
 
 		$pdo = \DB::connection()->getPdo();
@@ -119,22 +122,21 @@ class GenericLinker extends Controller
 		}
 		$pdo->query("USE $db");
 
-
 		$link_table = $durc_type_left."_$durc_type_right"."_$durc_type_tag";
-
 
 		$durc_tag_id = $durc_type_tag . '_id';
 		$durc_left_id = $durc_type_left . '_id';
 		$durc_right_id = $durc_type_right . '_id';
 
-		
 		if($durc_type_right == $durc_type_left){
 			//this is OK, but the field names need to be changed.
 			$durc_right_id = 'second_' . $durc_type_right . '_id';
 		}
 
 
-		if(!class_exists("\App\\$link_table")){
+		$link_class = "\App\\$link_table";
+
+		if(!class_exists($link_class)){
 			//so the class does not exist yet. Thats fine.
 			//we support autolinking as long as the left, right and tag tables exist...
 			//so see if we have a database table.
@@ -172,8 +174,14 @@ WHERE table_schema = '$db'
 					echo "Error: While it is possible to have the same table on the left and right of the linker, the tag column must not be the same as either the left or the right";
 					exit();
 				}
+		$durc_tag_name_field = $tag_class::getNameField();
+		$durc_left_name_field = $left_class::getNameField();
+		$durc_right_name_field = $right_class::getNameField();
+
 
 				$message = "
+## Here is the SQL to create the table
+
 CREATE TABLE IF NOT EXISTS $db.$link_table  ( 
 	`id` INT(11) NOT NULL AUTO_INCREMENT ,  
 	`$durc_left_id` INT(11) NOT NULL ,  
@@ -187,8 +195,48 @@ CREATE TABLE IF NOT EXISTS $db.$link_table  (
 	UNIQUE KEY( $durc_left_id, $durc_right_id, $durc_tag_id )
 	) ENGINE = MyISAM 
 ;
+
+## Here is the SQL to create the graph browser
+
+SELECT 
+	$durc_right_id AS source_id,
+	$durc_right_name_field AS source_name,
+	100 AS source_size,
+	'$durc_type_right' AS source_type,
+	'$durc_type_right' AS source_group,
+	0 AS source_longitude,
+	0 AS source_latitude,
+	CONCAT('/DURC/json/$durc_type_right/',$durc_right_id) AS source_json_url,
+	'' AS source_img,
+
+	$durc_left_id AS target_id,
+	$durc_left_name_field AS target_name,
+	100 AS target_size,
+	'$durc_type_left' AS target_type,
+	'$durc_type_left' AS target_group,
+	0 AS target_longitude,
+	0 AS target_latitude,
+	CONCAT('/DURC/json/$durc_type_left/',$durc_left_id) AS source_json_url,
+	'' AS target_img,
+		
+	50 AS weight,
+	$durc_tag_name_field AS link_type,
+	1 AS query_num
+
+FROM $db.$link_table
+JOIN $db.$durc_type_tag ON 
+	$durc_type_tag.id =
+	$durc_tag_id
+JOIN $db.$durc_type_left ON
+	$durc_type_left.id =
+	$durc_left_id 
+JOIN $db.$durc_type_right ON 
+	$durc_type_right.id =
+	$durc_right_id 
+
 ";
 			}
+			// we could just run this SQL... but.. 
 			// this is horribly risky from a security standpoint... leading to obvious DOS
 			//instead we throw this back to the user...
 			//$pdo->query($messageg);
