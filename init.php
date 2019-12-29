@@ -10,6 +10,7 @@
 	$composer_locations = [
 		'/bin/composer',
 		'/usr/bin/composer',
+		'/usr/local/bin/composer',
 		];
 
 	//we assume its missing
@@ -23,6 +24,8 @@
 
 	if(!$is_got_composer){
 		echo "Error: I could not find composer globally installed\n";
+		echo "Follow these instructions https://getcomposer.org/doc/00-intro.md#globally and install it to /usr/bin/composer\n";
+		echo "Since the default of /usr/local/bin/composer is not a ubuntu default\n";
 		exit();
 	}
 
