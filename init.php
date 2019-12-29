@@ -73,7 +73,8 @@
 
 
 echo "You need to run the zermelo installation now... since it is interactive\n ./artisan zermelo:install\n\n";
-
+echo "Before you do that, you need to create a database user for this instance and edit .env to give database access\n";
+echo "be sure to give appropriate access to the auth, _zermelo_config, and _zermelo_cache databases, as well as a new database for this server\n";
 
 /*
 // for now, we are ignoring the installation of zermelo, because it requires the database to be configured
