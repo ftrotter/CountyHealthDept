@@ -58,7 +58,7 @@
 		"sudo -u $real_user php artisan vendor:publish --provider='CareSet\DURC\DURCServiceProvider'",
 		"sudo -u $real_user php artisan vendor:publish --tag=laravel-handlebars",
 		"chmod g+w storage/* -R", //this will actually be run as root!! and 
-		"chown www-data:www-data storage/* -R", //this will 
+		"chown $real_user:www-data storage/* -R", //this will 
 		"usermod -a -G www-data $real_user",
 		];
 
