@@ -28,7 +28,7 @@ ul.select2-results__options { max-height: 700px !important; }
 				</h2>
 				<p>
 This interface allows you to quickly tag sets of objects...
-<br> <a target='_blank' href='/Zermelo/DURC_{{$durc_type_left}}_{{$durc_type_right}}'> Current List of Links </a>
+<br> <a target='_blank' href='/Zermelo/DURC_{{$durc_type_left}}_{{$durc_type_right}}_{{$durc_type_tag}}'> Current List of Links </a>
 				</p>
 			</div>
 
@@ -37,11 +37,11 @@ This interface allows you to quickly tag sets of objects...
      </div>
 <div class='container-fluid'>
 
-<form method='POST' action='/genericLinkerSave/{{$durc_type_left}}/{{$durc_type_right}}'>
+<form method='POST' action='/genericLinkerSave/{{$durc_type_left}}/{{$durc_type_right}}/{{$durc_type_tag}}'>
 	{{ csrf_field() }}
 
 	<div class='row'>
-		<div class='col-md-6'>
+		<div class='col-md-4'>
 			<h3> {{$durc_type_left}} </h3>
 			<a href='/DURC/{{$durc_type_left}}' target='_blank'>Add {{$durc_type_left}} entries</a><br>
 
@@ -50,7 +50,15 @@ This interface allows you to quickly tag sets of objects...
 
 		</div>
 
-		<div class='col-md-6'>
+		<div class='col-md-4'>
+			<h3> {{$durc_type_tag}} </h3>
+			<a href='/DURC/{{$durc_type_tag}}' target='_blank'>Add {{$durc_type_tag}} entries</a><br>
+
+			<select class='{{$durc_type_tag}}_id form-control' multiple='' id='{{$durc_tag_id}}' name='{{$durc_tag_id}}[]'>
+			</select>
+
+		</div>
+		<div class='col-md-4'>
 			<h3> {{$durc_type_right}} </h3>
 			<a href='/DURC/{{$durc_type_right}}' target='_blank'>Add {{$durc_type_right}} entries</a><br>
 
@@ -117,6 +125,16 @@ $('.{{$durc_right_id}}').select2({
     	dataType: 'json'
   },
     minimumInputLength: 2,
+    templateResult: token_template,
+    templateSelection: token_template,
+    escapeMarkup: function(m) { return m; }	
+});
+
+$('.{{$durc_tag_id}}').select2({
+  ajax: {
+    	url: '/DURC/searchjson/{{$durc_type_tag}}/',
+    	dataType: 'json'
+  },
     templateResult: token_template,
     templateSelection: token_template,
     escapeMarkup: function(m) { return m; }	
