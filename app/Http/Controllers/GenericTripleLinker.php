@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
-class GenericLinker extends Controller
+class GenericTripleLinker extends Controller
 {
 
-	public function linkSaver(Request $request, $durc_type_left,$durc_type_right){
+	public function linkSaver(Request $request, $durc_type_left,$durc_type_right,$durc_type_tag){
 
 
-		$link_table = $durc_type_left."_$durc_type_right";
+		$link_table = $durc_type_left."_$durc_type_right"."_$durc_type_tag";
 	
 		$error_msg = "Error: ";
 		$has_error = false;
 
 		$left_id = $durc_type_left."_id";
 		$right_id = $durc_type_right."_id";
+		$tag_id = $durc_type_tag."_id";
 
 		if($left_id == $right_id){
 			//then we rename the same way we did when we setup the table..
@@ -35,6 +36,11 @@ class GenericLinker extends Controller
 			$has_error = true;
 			$error_msg .= "Nothing on the right to link...\n";
 		}
+		$tag_ids = $request->input($tag_id);
+		if(is_null($tag_ids)){
+			$has_error = true;
+			$error_msg .= "No tags to link...\n";
+		}
 		$link_note = $request->input('link_note');
 		//nothing in the link_note is fine and typical.
 
@@ -51,11 +57,13 @@ class GenericLinker extends Controller
 	
 		foreach($left_ids as $this_left_id){
 			foreach($right_ids as $this_right_id){
+				foreach($tag_ids as $this_tag_id){
 	
 					
 					$find_array = [
 						$left_id => $this_left_id,
 						$right_id => $this_right_id,
+						$tag_id => $this_tag_id,
 					];
 					$data_array = [
 						'is_bulk_linker' => 1,
@@ -68,13 +76,14 @@ class GenericLinker extends Controller
 					$all_linkers[] = $linker_object;
 					$total_links_created++;
 
+				}
 			}
 		}
 
-		$go_back_url  = "/genericLinkerForm/$durc_type_left/$durc_type_right";
-		$view_all_url = "/Zermelo/DURC_$durc_type_left"."_$durc_type_right";
+		$go_back_url  = "/genericLinkerForm/$durc_type_left/$durc_type_right/$durc_type_tag";
+		$view_all_url = "/Zermelo/DURC_$durc_type_left"."_$durc_type_right"."_$durc_type_tag";
 			
-		return view('linker.link_created',[
+		return view('linker.triple_link_created',[
 			'total_links_created' => $total_links_created,
 			'go_back_url' => $go_back_url,
 			'view_all_url' => $view_all_url,
@@ -84,17 +93,21 @@ class GenericLinker extends Controller
 
 
 
-	public function linkForm($durc_type_left,$durc_type_right){
+	public function linkForm($durc_type_left,$durc_type_right,$durc_type_tag){
 
 
 		$left_class = "\App\\$durc_type_left";
 		$right_class = "\App\\$durc_type_right";
+		$tag_class = "\App\\$durc_type_tag";
 		
 		if(!class_exists($left_class)){
 			return("Error $durc_type_left does not exist as DURC");
 		}
 		if(!class_exists($right_class)){
 			return("Error $durc_type_right does not exist as DURC");
+		}
+		if(!class_exists($tag_class)){
+			return("Error $durc_type_tag does not exist as DURC");
 		}
 
 		$pdo = \DB::connection()->getPdo();
@@ -109,8 +122,9 @@ class GenericLinker extends Controller
 		}
 		$pdo->query("USE $db");
 
-		$link_table = $durc_type_left."_$durc_type_right";
+		$link_table = $durc_type_left."_$durc_type_right"."_$durc_type_tag";
 
+		$durc_tag_id = $durc_type_tag . '_id';
 		$durc_left_id = $durc_type_left . '_id';
 		$durc_right_id = $durc_type_right . '_id';
 
@@ -126,9 +140,10 @@ class GenericLinker extends Controller
 			//so the class does not exist yet. Thats fine.
 			//we support autolinking as long as the left, right and tag tables exist...
 			//so see if we have a database table.
-			return $this->showSQLView($durc_type_left,$durc_type_right);
+			return $this->showSQLView($durc_type_left,$durc_type_right,$durc_type_tag);
 		}
 		//here we know that we have DURC classes for all 4 of the relevant data contructs...
+		//the list of tags, the object that sits to the right and the left of the tag relation...
 		//we are ready to show the Select2 heavy interface that will allow for really fast tagging...
 
 		
@@ -136,28 +151,35 @@ class GenericLinker extends Controller
 		$view_data = [
 			'durc_type_left' => $durc_type_left,
 			'durc_type_right' => $durc_type_right,
+			'durc_type_tag' => $durc_type_tag,
 			'durc_left_id' => $durc_left_id,
 			'durc_right_id' => $durc_right_id,
+			'durc_tag_id' => $durc_tag_id,
+			'durc_linker' => $link_table,
 			'durc_linker' => $link_table,
 		];
 
-		return view('linker.main',$view_data);
+		return view('linker.triple_main',$view_data);
 
 	}
 
 	//we have this as a second function so that we can see this anytime we want
 	//but in production this code will get called by the linkForm function... 
-	public function showSQLView($durc_type_left,$durc_type_right){
+	public function showSQLView($durc_type_left,$durc_type_right,$durc_type_tag){
 
 
 		$left_class = "\App\\$durc_type_left";
 		$right_class = "\App\\$durc_type_right";
+		$tag_class = "\App\\$durc_type_tag";
 		
 		if(!class_exists($left_class)){
 			return("Error $durc_type_left does not exist as DURC");
 		}
 		if(!class_exists($right_class)){
 			return("Error $durc_type_right does not exist as DURC");
+		}
+		if(!class_exists($tag_class)){
+			return("Error $durc_type_tag does not exist as DURC");
 		}
 
 		$pdo = \DB::connection()->getPdo();
@@ -172,8 +194,9 @@ class GenericLinker extends Controller
 		}
 		$pdo->query("USE $db");
 
-		$link_table = $durc_type_left."_$durc_type_right";
+		$link_table = $durc_type_left."_$durc_type_right"."_$durc_type_tag";
 
+		$durc_tag_id = $durc_type_tag . '_id';
 		$durc_left_id = $durc_type_left . '_id';
 		$durc_right_id = $durc_type_right . '_id';
 
@@ -201,6 +224,20 @@ WHERE table_schema = '$db'
 			}
 
 
+			$is_tag_distinct = true;
+			if($durc_type_left  == $durc_type_tag){
+				$is_tag_distinct = false;
+			}
+			if($durc_type_right  == $durc_type_tag){
+				$is_tag_distinct = false;
+			}
+
+			if(!$is_tag_distinct){
+				echo "Error: While it is possible to have the same table on the left and right of the linker, the tag column must not be the same as either the left or the right";
+				exit();
+			}
+
+		$durc_tag_name_field = $tag_class::getNameField();
 		$durc_left_name_field = $left_class::getNameField();
 		$durc_right_name_field = $right_class::getNameField();
 
@@ -212,12 +249,13 @@ CREATE TABLE IF NOT EXISTS $db.$link_table  (
 	`id` INT(11) NOT NULL AUTO_INCREMENT ,  
 	`$durc_left_id` INT(11) NOT NULL ,  
 	`$durc_right_id` INT(11) NOT NULL ,  
+	`$durc_tag_id` INT(11) NOT NULL ,  
 	`is_bulk_linker` TINYINT(1) NOT NULL DEFAULT '0' ,  
 	`link_note` VARCHAR(255) DEFAULT NULL ,  
 	`created_at` DATETIME NOT NULL ,  
 	`updated_at` DATETIME NOT NULL ,    
 	PRIMARY KEY  (`id`),
-	UNIQUE KEY( $durc_left_id, $durc_right_id )
+	UNIQUE KEY( $durc_left_id, $durc_right_id, $durc_tag_id )
 	) ENGINE = MyISAM 
 ;
 
@@ -245,10 +283,13 @@ SELECT
 	'' AS target_img,
 		
 	100 AS weight,
-	'connection' AS link_type,
+	$durc_tag_name_field AS link_type,
 	1 AS query_num
 
 FROM $db.$link_table
+JOIN $db.$durc_type_tag AS tag ON 
+	tag.id =
+	$durc_tag_id
 JOIN $db.$durc_type_left AS leftside ON
 	leftside.id =
 	$durc_left_id 
@@ -261,11 +302,8 @@ JOIN $db.$durc_type_right AS rightside ON
 			// this is horribly risky from a security standpoint... leading to obvious DOS
 			//instead we throw this back to the user...
 			//$pdo->query($messageg);
-			return view('linker.create_table',['message' => $message]);	
+			return view('linker.triple_create_table',['message' => $message]);	
 	}
-
-
-
 
 
 }
