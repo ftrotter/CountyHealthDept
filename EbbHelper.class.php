@@ -443,7 +443,8 @@ class EbbHelper {
 		}
 
 		//lets get the row count from the api. This is the entire reason we get this file..
-		$row_count_data = json_decode(file_get_contents($rowcount_filename),true);
+		//apparently this file is sometimes capitalized... to fix this, we will force it to be lower case before processing it...
+		$row_count_data = json_decode(strtolower(file_get_contents($rowcount_filename)),true);
 
 		if(isset($row_count_data[0]['column_alias_guard__count'])){
 			$api_row_count = $row_count_data[0]['column_alias_guard__count'];
