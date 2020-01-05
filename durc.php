@@ -15,8 +15,9 @@
 		$db_arg = $hardcode_db_list;
 	}
 
+
 	//but if arguments are present respect them instead..
-	if($database_list > 0){
+	if(count($database_list) > 0){
 		$db_arg = '';
 		foreach($database_list as $this_database){
 			$db_arg .= " --DB=$this_database  ";
@@ -26,18 +27,20 @@
 	//but we have to have something..
 	if(!$db_arg){
 		echo "Critical Error: you must either hard code the database parameters by changing this file... or enter them as the only arguments to this command\n";
+		echo $db_arg;
 		exit();
 	}
 
-exit();
 $commands = [
-	"php artisan DURC:mine --squash $db_arg",
-	"php artisan DURC:write ",
-	"cp routes/starting.web.php routes/web.php",
-	"cat routes/web.durc.php | tail -n +2 >> routes/web.php",
-	"cat routes/ending.web.php >> routes/web.php",
-	"composer clear-cache",
-	"composer dump-autoload",
+	"php artisan DURC:mine --squash $db_arg", //mine the databases
+	"php artisan DURC:write ", //generate the sourcecode automagically
+	//TODO this is clearly not the right way to do this...
+	"cp routes/starting.web.php routes/web.php", //copy the route prefixes routes over... 
+	"cat routes/web.durc.php | tail -n +2 >> routes/web.php", //copy the auto generated routes over
+	"cat routes/ending.web.php >> routes/web.php", //copy the route closing contentn
+	//these two are just for good measure... 
+	"composer clear-cache", //make composer see the new files
+	"composer dump-autoload", //and refresh the composer cache...
 ];
 
 
@@ -45,9 +48,10 @@ $commands = [
 		echo "Running: $this_command\n";
 		system($this_command,$return_status);
 		
-		if($$return_status < 0){ //then it retueded an error!!
+		//DURC tries to respect error codes for returned status.. so this works as expected.
+		if($return_status > 0){ //then it retueded an error!!
 			echo "Error: $this_command failed... returned $return_status stopping\n";
-			exit(-1);
+			exit(100);
 		}
 	}
 
