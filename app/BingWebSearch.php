@@ -48,11 +48,11 @@ class BingWebSearch  {
 		$url = "https://$this->azure_domain/bing/7.0/search?q=$q&count=50&safeSearch=Strict&mkt=en-us";
 		$url = "https://api.cognitive.microsoft.com/bing/v7.0/search?q=$q&count=50&safeSearch=Strict&mkt=en-us";
 
-		echo "using $url\n";
+		//echo "using $url\n";
 	
 		$api_key = $this->api_key;
 
-		echo "using $api_key\n";
+		//echo "using $api_key\n";
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL,$url);
