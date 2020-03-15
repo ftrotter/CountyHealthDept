@@ -230,6 +230,7 @@ class healthdept_urlController extends DURCController
 	$tmp_healthdept_url = $myNewhealthdept_url;
 			$tmp_healthdept_url->id = DURC::formatForStorage( 'id', 'int', $request->id, $tmp_healthdept_url ); 
 		$tmp_healthdept_url->url = DURC::formatForStorage( 'url', 'varchar', $request->url, $tmp_healthdept_url ); 
+		$tmp_healthdept_url->search_term = DURC::formatForStorage( 'search_term', 'varchar', $request->search_term, $tmp_healthdept_url ); 
 		$tmp_healthdept_url->healthdept_id = DURC::formatForStorage( 'healthdept_id', 'int', $request->healthdept_id, $tmp_healthdept_url ); 
 
 	
@@ -374,6 +375,7 @@ class healthdept_urlController extends DURCController
 	$tmp_healthdept_url = $healthdept_url;
 			$tmp_healthdept_url->id = DURC::formatForStorage( 'id', 'int', $request->id, $tmp_healthdept_url ); 
 		$tmp_healthdept_url->url = DURC::formatForStorage( 'url', 'varchar', $request->url, $tmp_healthdept_url ); 
+		$tmp_healthdept_url->search_term = DURC::formatForStorage( 'search_term', 'varchar', $request->search_term, $tmp_healthdept_url ); 
 		$tmp_healthdept_url->healthdept_id = DURC::formatForStorage( 'healthdept_id', 'int', $request->healthdept_id, $tmp_healthdept_url ); 
 
 

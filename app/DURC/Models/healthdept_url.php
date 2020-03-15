@@ -41,6 +41,7 @@ class healthdept_url extends DURCModel{
 	static $field_type_map = [
 		'id' => 'int',
 		'url' => 'varchar',
+		'search_term' => 'varchar',
 		'healthdept_id' => 'int',
 		'created_at' => 'datetime',
 		'updated_at' => 'datetime',
@@ -50,6 +51,7 @@ class healthdept_url extends DURCModel{
     protected $non_nullable_fields = [
 		'id',
 		'url',
+		'search_term',
 		'healthdept_id',
 		'created_at',
 		'updated_at',
@@ -59,6 +61,7 @@ class healthdept_url extends DURCModel{
     protected $attributes = [
 		'id' => null,
 		'url' => null,
+		'search_term' => null,
 		'healthdept_id' => null,
 		'created_at' => 'current_timestamp()',
 		'updated_at' => 'current_timestamp()',
@@ -95,6 +98,7 @@ class healthdept_url extends DURCModel{
 CREATE TABLE `app_countyhealth`.`healthdept_url` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `search_term` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
   `healthdept_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),

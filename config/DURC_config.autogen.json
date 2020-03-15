@@ -186,6 +186,18 @@
                     "is_auto_increment": false
                 },
                 {
+                    "column_name": "search_term",
+                    "data_type": "varchar",
+                    "is_primary_key": false,
+                    "is_foreign_key": false,
+                    "is_linked_key": false,
+                    "foreign_db": null,
+                    "foreign_table": null,
+                    "is_nullable": false,
+                    "default_value": null,
+                    "is_auto_increment": false
+                },
+                {
                     "column_name": "healthdept_id",
                     "data_type": "int",
                     "is_primary_key": false,
@@ -231,7 +243,7 @@
                     "local_key": "healthdept_id"
                 }
             },
-            "create_table_sql": "CREATE TABLE `app_countyhealth`.`healthdept_url` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `healthdept_id` int(11) NOT NULL,\n  `created_at` datetime NOT NULL DEFAULT current_timestamp(),\n  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),\n  PRIMARY KEY (`id`)\n) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+            "create_table_sql": "CREATE TABLE `app_countyhealth`.`healthdept_url` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `search_term` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `healthdept_id` int(11) NOT NULL,\n  `created_at` datetime NOT NULL DEFAULT current_timestamp(),\n  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),\n  PRIMARY KEY (`id`)\n) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
         },
         "state": {
             "table_name": "state",

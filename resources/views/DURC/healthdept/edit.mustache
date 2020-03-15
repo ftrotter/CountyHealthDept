@@ -212,6 +212,7 @@ $('.select2_state_id').select2({
 <tr>
 			<th> id </th>
 			<th> url </th>
+			<th> search_term </th>
 			<th> healthdept_id </th>
 			<th> created_at </th>
 			<th> updated_at </th>
@@ -224,6 +225,7 @@ $('.select2_state_id').select2({
 		{{#.}}
 			<td><a href='/DURC/healthdept_url/{{id}}'>{{id}}</a></td>
 			<td>{{url}}</td>
+			<td>{{search_term}}</td>
 			<td>{{healthdept_id_DURClabel}} ({{healthdept_id}}) </td>			<td>{{created_at}}</td>
 			<td>{{updated_at}}</td>
 		

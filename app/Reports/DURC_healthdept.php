@@ -1,7 +1,7 @@
 <?php
 /*
 Note: because this file was signed, everything originally placed before the name space line has been replaced... with this comment ;)
-FILE_SIG=155bbe8e4c09ce78020d917d14b7b0b8
+FILE_SIG=c29392ac5f3c0a6a62d29c052fd2e433
 */
 namespace App\Reports;
 use CareSet\Zermelo\Reports\Tabular\AbstractTabularReport;
@@ -402,6 +402,19 @@ array (
       ),
       2 => 
       array (
+        'column_name' => 'search_term',
+        'data_type' => 'varchar',
+        'is_primary_key' => false,
+        'is_foreign_key' => false,
+        'is_linked_key' => false,
+        'foreign_db' => NULL,
+        'foreign_table' => NULL,
+        'is_nullable' => false,
+        'default_value' => NULL,
+        'is_auto_increment' => false,
+      ),
+      3 => 
+      array (
         'column_name' => 'healthdept_id',
         'data_type' => 'int',
         'is_primary_key' => false,
@@ -413,7 +426,7 @@ array (
         'default_value' => NULL,
         'is_auto_increment' => false,
       ),
-      3 => 
+      4 => 
       array (
         'column_name' => 'created_at',
         'data_type' => 'datetime',
@@ -426,7 +439,7 @@ array (
         'default_value' => 'current_timestamp()',
         'is_auto_increment' => false,
       ),
-      4 => 
+      5 => 
       array (
         'column_name' => 'updated_at',
         'data_type' => 'datetime',
