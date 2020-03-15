@@ -1,0 +1,251 @@
+
+{{#has_session_status}}
+<div class='alert alert-info' role='alert'>
+  {{session_status}}
+</div>
+{{/has_session_status}}
+
+<div id='delete-success-alert' class='alert alert-success' role='alert' style='display: none;'>
+                You have successfully deleted this record. This was a hard delete, no going back. But you can save again if you want.. 
+            </div>
+
+{{#is_new}}
+<form action='/DURC/healthdept_url' method='POST'>
+{{/is_new}}
+
+{{^is_new}}
+<form action='/DURC/healthdept_url/{{id}}' method='POST'>
+    <input type='hidden' name='_method' value='PUT'>
+{{/is_new}}
+
+	<h1>healthdept_url</h1>
+<div class='card'>
+  <div class='card-header'>
+<h4> {{durc_instance_name}}</h4>
+<ul>
+<li> <a href='/Zermelo/DURC_healthdept_url/'>Return to healthdept_url list</a> </li>
+{{^is_new}}
+<li> <a href='/DURC/healthdept_url/create'>Create new healthdept_url </a> </li>
+{{/is_new}}
+</ul>
+  </div>
+<div class='card-body'>
+
+  <fieldset>
+    <legend>Edit {{durc_instance_name}}  </legend>
+	<input type='hidden' name='_token' value='{{csrf_token}}'>
+	
+  <div class='form-group row {{id_row_class}}'>
+    <label for='id' class='col-sm-4 col-form-label'>id</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='id' name='id' placeholder='' value='{{id}}'  >
+    </div></div>
+  <div class='form-group row {{url_row_class}}'>
+    <label for='url' class='col-sm-4 col-form-label'>url</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='url' name='url' placeholder='' value='{{url}}'  required>
+    </div></div>
+  <div class='form-group row {{healthdept_id_row_class}}'>
+    <label for='healthdept_id' class='col-sm-4 col-form-label'>healthdept_id</label>
+    <div class='col-sm-7'>
+	Current id value: {{healthdept_id}} (see below for lookup value)<br>
+	<select class='select2_healthdept_id form-control' id='healthdept_id' name='healthdept_id'  >
+	<option value='{{healthdept_id}}' selected='selected'>{{healthdept_id}}</option>
+	</select>
+    </div>
+  </div>
+
+<script type='text/javascript'>
+
+$('.select2_healthdept_id').select2({
+  ajax: {
+    url: '/DURC/searchjson/healthdept',
+    delay: 1000,
+    dataType: 'json',
+    data: function (params) {
+          var query = {
+              q: params.term,
+              page: params.page || 1
+          }
+
+          // Query parameters will be ?search=[term]&page=[page]
+          return query;
+      }
+  }
+});
+
+
+</script>
+
+
+  <div class='form-group row {{created_at_row_class}}'>
+    <label for='created_at' class='col-sm-4 col-form-label'>created_at</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='created_at' name='created_at' placeholder='' value='{{created_at}}'  >
+
+<button type='button' class='btn btn-primary' id='created_at_FontPicker'>
+<img src='/css/ic_today_black_24dp_1x.png'> 
+</button>
+<button type='button' class='btn btn-primary' id='created_at_TodayNow'> Today and Now</button>
+
+<script>
+	var created_atConv = new AnyTime.Converter({format: '%Y-%m-%d %T'});
+  	$('#created_at_TodayNow').click( function(e) {
+      		$('#created_at').val(created_atConv.format(new Date())).change(); } );
+
+    	$('#created_at_FontPicker').click(
+      		function(e) {
+        		$('#created_at').AnyTime_noPicker().AnyTime_picker(
+				{
+    					format: '%Y-%m-%d %T',
+    					formatUtcOffset: '%: (%@)'
+				} 
+			).focus();
+        	e.preventDefault();
+        	} );
+</script>
+
+    </div>
+  </div>
+
+  <div class='form-group row {{updated_at_row_class}}'>
+    <label for='updated_at' class='col-sm-4 col-form-label'>updated_at</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='updated_at' name='updated_at' placeholder='' value='{{updated_at}}'  >
+
+<button type='button' class='btn btn-primary' id='updated_at_FontPicker'>
+<img src='/css/ic_today_black_24dp_1x.png'> 
+</button>
+<button type='button' class='btn btn-primary' id='updated_at_TodayNow'> Today and Now</button>
+
+<script>
+	var updated_atConv = new AnyTime.Converter({format: '%Y-%m-%d %T'});
+  	$('#updated_at_TodayNow').click( function(e) {
+      		$('#updated_at').val(updated_atConv.format(new Date())).change(); } );
+
+    	$('#updated_at_FontPicker').click(
+      		function(e) {
+        		$('#updated_at').AnyTime_noPicker().AnyTime_picker(
+				{
+    					format: '%Y-%m-%d %T',
+    					formatUtcOffset: '%: (%@)'
+				} 
+			).focus();
+        	e.preventDefault();
+        	} );
+</script>
+
+    </div>
+  </div>
+
+  <div class='form-group row'>
+    <div class='col-sm-8'>
+      <button type='submit' class='btn btn-primary'>Save Data</button>
+    </div>
+  </div>
+  
+</fieldset>
+</div></div>
+</form>
+<br>
+  <div class='form-group row'>
+              <div class='col-sm-12 text-right'>
+
+<form action='/DURC/healthdept_url/{{id}}' method='POST'>
+    	<input type='hidden' name='_method' value='DELETE'>
+	<input type='hidden' name='_token' value='{{csrf_token}}'>
+
+              <button type='button' data-id='{{id}}' data-controller='healthdept_url' class='do-soft-delete btn btn-outline-danger'>Hard Delete healthdept_url</button>
+</form>
+              </div>
+            </div>
+
+
+<br>
+<div class='card'>
+  <div class='card-header'>
+    Belongs To Relationships
+  </div>
+<div class='card-body'>
+
+<div class='card'>
+  <div class='card-header'>
+    healthdept ( <a href='/DURC/healthdept/'>see all</a> )
+{{^healthdept}}
+(no values)
+{{/healthdept}}
+  </div>
+<div class='card-body'>
+<table id='table_healthdept' class='table table-bordered table-hover table-responsive table-sm'>
+<thead>
+<tr>
+			<th> id </th>
+			<th> healthdept_name </th>
+			<th> county_name </th>
+			<th> population </th>
+			<th> state_id </th>
+			<th> fips_code </th>
+			<th> healthdept_url </th>
+			<th> wikipedia_url </th>
+			<th> county_url </th>
+			<th> created_at </th>
+			<th> updated_at </th>
+
+</tr>
+</thead>
+<tbody>
+{{#healthdept}}
+	<tr>
+		{{#.}}
+			<td><a href='/DURC/healthdept/{{id}}'>{{id}}</a></td>
+			<td>{{healthdept_name}}</td>
+			<td>{{county_name}}</td>
+			<td>{{population}}</td>
+			<td>{{state_id_DURClabel}} ({{state_id}}) </td>			<td>{{fips_code}}</td>
+			<td>{{healthdept_url}}</td>
+			<td>{{wikipedia_url}}</td>
+			<td>{{county_url}}</td>
+			<td>{{created_at}}</td>
+			<td>{{updated_at}}</td>
+		
+		{{/.}}
+	</tr>
+{{/healthdept}}
+</tbody>
+</table>
+</div></div> <!-- end healthdept card-->
+</div></div> <!--end belongs to card-->
+<br>
+    
+    <script type='text/javascript'>
+    // This javascript controls the null checkboxes
+        $(document).ready(function() {
+            
+            // keep an assoc array of the last entered values
+            let last_null_values = {};
+            
+            $('.null-checkbox').change(function(e) {
+
+                // get the id of the element we're next to
+                let id = $(this).attr('data-elem');
+
+                // store current value, and set to null
+                if ($(this).prop('checked')) {
+                    last_null_values[id]= $('#'+id).val();
+                    $('#'+id).val(null);
+                    $('#'+id).attr('readonly', true);
+                } else {
+                    $('#'+id).val(last_null_values[id]);
+                    $('#'+id).attr('readonly', false);
+                }
+            });
+            
+            // Trigger change on page load
+            $('.null-checkbox').each(function() {
+                if ($(this).prop('checked')) {
+                    let id = $(this).attr('data-elem');
+                    $('#'+id).attr('readonly', true);
+                }
+            });
+        });
+    </script>

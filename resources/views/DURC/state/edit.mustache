@@ -1,0 +1,203 @@
+
+{{#has_session_status}}
+<div class='alert alert-info' role='alert'>
+  {{session_status}}
+</div>
+{{/has_session_status}}
+
+<div id='delete-success-alert' class='alert alert-success' role='alert' style='display: none;'>
+                You have successfully deleted this record. This was a hard delete, no going back. But you can save again if you want.. 
+            </div>
+
+{{#is_new}}
+<form action='/DURC/state' method='POST'>
+{{/is_new}}
+
+{{^is_new}}
+<form action='/DURC/state/{{id}}' method='POST'>
+    <input type='hidden' name='_method' value='PUT'>
+{{/is_new}}
+
+	<h1>state</h1>
+<div class='card'>
+  <div class='card-header'>
+<h4> {{durc_instance_name}}</h4>
+<ul>
+<li> <a href='/Zermelo/DURC_state/'>Return to state list</a> </li>
+{{^is_new}}
+<li> <a href='/DURC/state/create'>Create new state </a> </li>
+{{/is_new}}
+</ul>
+  </div>
+<div class='card-body'>
+
+  <fieldset>
+    <legend>Edit {{durc_instance_name}}  </legend>
+	<input type='hidden' name='_token' value='{{csrf_token}}'>
+	
+  <div class='form-group row {{id_row_class}}'>
+    <label for='id' class='col-sm-4 col-form-label'>id</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='id' name='id' placeholder='' value='{{id}}'  >
+    </div></div>
+  <div class='form-group row {{ssa_state_code_row_class}}'>
+    <label for='ssa_state_code' class='col-sm-4 col-form-label'>ssa_state_code</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='ssa_state_code' name='ssa_state_code' placeholder='' value='{{ssa_state_code}}'  required>
+    </div></div>
+  <div class='form-group row {{short_state_row_class}}'>
+    <label for='short_state' class='col-sm-4 col-form-label'>short_state</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='short_state' name='short_state' placeholder='NULL' value='{{short_state}}'  >
+    </div><div class='col-sm-1'>
+                    <input class='form-check-input null-checkbox' type='checkbox' data-elem='short_state' name='short_stateNull' id='short_stateNull' value='short_stateNull' {{short_state_checked}}>
+                    <label class='form-check-label' for='short_stateNull'>null</label>
+                </div></div>
+  <div class='form-group row {{state_name_row_class}}'>
+    <label for='state_name' class='col-sm-4 col-form-label'>state_name</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='state_name' name='state_name' placeholder='NULL' value='{{state_name}}'  >
+    </div><div class='col-sm-1'>
+                    <input class='form-check-input null-checkbox' type='checkbox' data-elem='state_name' name='state_nameNull' id='state_nameNull' value='state_nameNull' {{state_name_checked}}>
+                    <label class='form-check-label' for='state_nameNull'>null</label>
+                </div></div>
+  <div class='form-group row {{state_ucase_row_class}}'>
+    <label for='state_ucase' class='col-sm-4 col-form-label'>state_ucase</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='state_ucase' name='state_ucase' placeholder='' value='{{state_ucase}}'  required>
+    </div></div>
+  <div class='form-group row {{state_or_territory_row_class}}'>
+    <label for='state_or_territory' class='col-sm-4 col-form-label'>state_or_territory</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='state_or_territory' name='state_or_territory' placeholder='NULL' value='{{state_or_territory}}'  >
+    </div><div class='col-sm-1'>
+                    <input class='form-check-input null-checkbox' type='checkbox' data-elem='state_or_territory' name='state_or_territoryNull' id='state_or_territoryNull' value='state_or_territoryNull' {{state_or_territory_checked}}>
+                    <label class='form-check-label' for='state_or_territoryNull'>null</label>
+                </div></div>
+  <div class='form-group row {{population_row_class}}'>
+    <label for='population' class='col-sm-4 col-form-label'>population</label>
+    <div class='col-sm-7'>
+      <input type='text' class='form-control' id='population' name='population' placeholder='' value='{{population}}'  required>
+    </div></div>
+  <div class='form-group row {{is_known_good_state_row_class}}'>
+    <div class='col-sm-4'><label>is_known_good_state</label></div>
+    <div class='col-sm-7'>
+        <div class='checkbox'>
+            <input type='checkbox' id='is_known_good_state' name='is_known_good_state' {{is_known_good_state}}  >
+       </div> 
+    </div>
+  </div>
+
+  <div class='form-group row'>
+    <div class='col-sm-8'>
+      <button type='submit' class='btn btn-primary'>Save Data</button>
+    </div>
+  </div>
+  
+</fieldset>
+</div></div>
+</form>
+<br>
+  <div class='form-group row'>
+              <div class='col-sm-12 text-right'>
+
+<form action='/DURC/state/{{id}}' method='POST'>
+    	<input type='hidden' name='_method' value='DELETE'>
+	<input type='hidden' name='_token' value='{{csrf_token}}'>
+
+              <button type='button' data-id='{{id}}' data-controller='state' class='do-soft-delete btn btn-outline-danger'>Hard Delete state</button>
+</form>
+              </div>
+            </div>
+
+
+<br>
+<div class='card'>
+  <div class='card-header'>
+    Relationships
+  </div>
+<div class='card-body'>
+
+<div class='card'>
+  <div class='card-header'>
+    Has many healthdept ( <a href='/DURC/healthdept/'>see all</a> )
+{{^healthdept}}
+(no values)
+{{/healthdept}}
+  </div>
+<div class='card-body'>
+
+<table id='table_healthdept' class='table table-bordered table-hover table-responsive table-sm'>
+<thead>
+<tr>
+			<th> id </th>
+			<th> healthdept_name </th>
+			<th> county_name </th>
+			<th> population </th>
+			<th> state_id </th>
+			<th> fips_code </th>
+			<th> healthdept_url </th>
+			<th> wikipedia_url </th>
+			<th> county_url </th>
+			<th> created_at </th>
+			<th> updated_at </th>
+
+</tr>
+</thead>
+<tbody>
+{{#healthdept}}
+	<tr>
+		{{#.}}
+			<td><a href='/DURC/healthdept/{{id}}'>{{id}}</a></td>
+			<td>{{healthdept_name}}</td>
+			<td>{{county_name}}</td>
+			<td>{{population}}</td>
+			<td>{{state_id_DURClabel}} ({{state_id}}) </td>			<td>{{fips_code}}</td>
+			<td>{{healthdept_url}}</td>
+			<td>{{wikipedia_url}}</td>
+			<td>{{county_url}}</td>
+			<td>{{created_at}}</td>
+			<td>{{updated_at}}</td>
+		
+		{{/.}}
+	</tr>
+{{/healthdept}}
+</tbody>
+</table>
+</div></div> <!-- end healthdept card-->
+<br>
+</div></div> <!--end has many card-->
+<br>
+    
+    <script type='text/javascript'>
+    // This javascript controls the null checkboxes
+        $(document).ready(function() {
+            
+            // keep an assoc array of the last entered values
+            let last_null_values = {};
+            
+            $('.null-checkbox').change(function(e) {
+
+                // get the id of the element we're next to
+                let id = $(this).attr('data-elem');
+
+                // store current value, and set to null
+                if ($(this).prop('checked')) {
+                    last_null_values[id]= $('#'+id).val();
+                    $('#'+id).val(null);
+                    $('#'+id).attr('readonly', true);
+                } else {
+                    $('#'+id).val(last_null_values[id]);
+                    $('#'+id).attr('readonly', false);
+                }
+            });
+            
+            // Trigger change on page load
+            $('.null-checkbox').each(function() {
+                if ($(this).prop('checked')) {
+                    let id = $(this).attr('data-elem');
+                    $('#'+id).attr('readonly', true);
+                }
+            });
+        });
+    </script>
