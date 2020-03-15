@@ -80,35 +80,35 @@ class bingCountyScan extends Command
 		$bing_search_string = "site:$domain $search_term";
 		$this->info("searching with\t $bing_search_string");
 
+		$response_data = $bing->doSearch($bing_search_string);
+
+        	if(isset($response_data['webPages']['value'])){
+                	$resulting_pages = $response_data['webPages']['value'];
+        	}else{
+                	$this->error("Fail: Got results, but they do not include webPages as we expect");
+               		exit();
+        	}
+
+        	$result_count = count($resulting_pages);
+        	$this->info("Got $result_count results fom the Bing API");
+        	foreach($resulting_pages as $this_page){
+               	 	$url = $this_page['url'];
+			$this->info("$bing_search_string \t\t$url");
+
+			//ok lets save this data...
+			$healthdept_url = new \App\healthdept_url();
+
+			$healthdept_url->fill([
+				'url' => $url,
+				'search_term' => $search_term,
+				'healthdept_id' => $healthdept_id
+				]
+				);
+
+			$healthdept_url->save();
+
+		}
 	}
-
-	$response_data = $bing->doSearch($bing_search_string);
-
-        if(isset($response_data['webPages']['value'])){
-                $resulting_pages = $response_data['webPages']['value'];
-        }else{
-                $this->error("Fail: Got results, but they do not include webPages as we expect");
-                exit();
-        }
-
-        $result_count = count($resulting_pages);
-        $this->info("Got $result_count results fom the Bing API");
-        foreach($resulting_pages as $this_page){
-                $url = $this_page['url'];
-		$this->info("$bing_search_string \t\t$url");
-
-		//ok lets save this data...
-		$healthdept_url = \App\healthdept_url::create([
-			'url' => $url,
-			'search_term' => $search_term,
-			'healthdept_id' => $healthdept_id,
-			]
-			);
-	
-		$healthdept_url->save();
-
-	}
-
 	
 
 
