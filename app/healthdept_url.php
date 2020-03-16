@@ -1,7 +1,7 @@
 <?php
 /*
 Note: because this file was signed, everything originally placed before the name space line has been replaced... with this comment ;)
-FILE_SIG=19279c8c33054e6b93a82f7bda7e7601
+FILE_SIG=07d75a9238d46db3f6e50dd2ee110e34
 */
 namespace App;
 /*
@@ -36,8 +36,6 @@ class healthdept_url extends \App\DURC\Models\healthdept_url
 			//'url', //varchar
 			//'search_term', //varchar
 			//'healthdept_id', //int
-			//'created_at', //datetime
-			//'updated_at', //datetime
 		]; //end hidden array
 
 

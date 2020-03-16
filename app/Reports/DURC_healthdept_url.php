@@ -1,7 +1,7 @@
 <?php
 /*
 Note: because this file was signed, everything originally placed before the name space line has been replaced... with this comment ;)
-FILE_SIG=ae6c98859d196401e4f39bcafd8bf7ed
+FILE_SIG=c3a8f57ca7f10c30d2e71f1337f8c2e3
 */
 namespace App\Reports;
 use CareSet\Zermelo\Reports\Tabular\AbstractTabularReport;
@@ -68,8 +68,6 @@ $joined_select_field_sql
 , healthdept_url.url AS url
 , healthdept_url.search_term AS search_term
 , healthdept_url.healthdept_id AS healthdept_id
-, healthdept_url.created_at AS created_at
-, healthdept_url.updated_at AS updated_at
 
 FROM app_countyhealth.healthdept_url
 
@@ -88,8 +86,6 @@ $joined_select_field_sql
 , healthdept_url.url AS url
 , healthdept_url.search_term AS search_term
 , healthdept_url.healthdept_id AS healthdept_id
-, healthdept_url.created_at AS created_at
-, healthdept_url.updated_at AS updated_at
  
 FROM app_countyhealth.healthdept_url 
 
@@ -259,32 +255,6 @@ array (
     'foreign_table' => 'healthdept',
     'is_nullable' => false,
     'default_value' => NULL,
-    'is_auto_increment' => false,
-  ),
-  4 => 
-  array (
-    'column_name' => 'created_at',
-    'data_type' => 'datetime',
-    'is_primary_key' => false,
-    'is_foreign_key' => false,
-    'is_linked_key' => false,
-    'foreign_db' => NULL,
-    'foreign_table' => NULL,
-    'is_nullable' => false,
-    'default_value' => 'current_timestamp()',
-    'is_auto_increment' => false,
-  ),
-  5 => 
-  array (
-    'column_name' => 'updated_at',
-    'data_type' => 'datetime',
-    'is_primary_key' => false,
-    'is_foreign_key' => false,
-    'is_linked_key' => false,
-    'foreign_db' => NULL,
-    'foreign_table' => NULL,
-    'is_nullable' => false,
-    'default_value' => 'current_timestamp()',
     'is_auto_increment' => false,
   ),
 )

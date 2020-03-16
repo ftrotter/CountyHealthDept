@@ -15,8 +15,6 @@ class healthdept_urlController extends DURCController
 	public $view_data = [];
 
 	protected static $hidden_fields_array = [
-		'created_at',
-		'updated_at',
 
 	];
 

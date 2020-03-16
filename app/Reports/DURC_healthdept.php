@@ -1,7 +1,7 @@
 <?php
 /*
 Note: because this file was signed, everything originally placed before the name space line has been replaced... with this comment ;)
-FILE_SIG=c29392ac5f3c0a6a62d29c052fd2e433
+FILE_SIG=0f0810a8c1e4a1e1d51fecb5bf4ee187
 */
 namespace App\Reports;
 use CareSet\Zermelo\Reports\Tabular\AbstractTabularReport;
@@ -424,32 +424,6 @@ array (
         'foreign_table' => 'healthdept',
         'is_nullable' => false,
         'default_value' => NULL,
-        'is_auto_increment' => false,
-      ),
-      4 => 
-      array (
-        'column_name' => 'created_at',
-        'data_type' => 'datetime',
-        'is_primary_key' => false,
-        'is_foreign_key' => false,
-        'is_linked_key' => false,
-        'foreign_db' => NULL,
-        'foreign_table' => NULL,
-        'is_nullable' => false,
-        'default_value' => 'current_timestamp()',
-        'is_auto_increment' => false,
-      ),
-      5 => 
-      array (
-        'column_name' => 'updated_at',
-        'data_type' => 'datetime',
-        'is_primary_key' => false,
-        'is_foreign_key' => false,
-        'is_linked_key' => false,
-        'foreign_db' => NULL,
-        'foreign_table' => NULL,
-        'is_nullable' => false,
-        'default_value' => 'current_timestamp()',
         'is_auto_increment' => false,
       ),
     ),

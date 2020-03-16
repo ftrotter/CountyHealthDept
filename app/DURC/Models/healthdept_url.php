@@ -31,9 +31,10 @@ class healthdept_url extends DURCModel{
 
 	//DURC did not detect any date fields
 
-	public $timestamps = true;
-	const UPDATED_AT = 'updated_at';
-	const CREATED_AT = 'created_at';
+	public $timestamps = false;
+	//DURC NOTE: did not find updated_at and created_at fields for this model
+
+	
 	
 	
 
@@ -43,8 +44,6 @@ class healthdept_url extends DURCModel{
 		'url' => 'varchar',
 		'search_term' => 'varchar',
 		'healthdept_id' => 'int',
-		'created_at' => 'datetime',
-		'updated_at' => 'datetime',
 			]; //end field_type_map
 		
     // Indicate which fields are nullable for the UI to be able to validate required form elements
@@ -53,8 +52,6 @@ class healthdept_url extends DURCModel{
 		'url',
 		'search_term',
 		'healthdept_id',
-		'created_at',
-		'updated_at',
 			]; // End of nullable fields
 
     // Use Eloquent attributes array to specify the default values for each field (if any) indicated by the DB schema, to be used as placeholder on form elements
@@ -63,8 +60,6 @@ class healthdept_url extends DURCModel{
 		'url' => null,
 		'search_term' => null,
 		'healthdept_id' => null,
-		'created_at' => 'current_timestamp()',
-		'updated_at' => 'current_timestamp()',
 			]; // End of attributes
         
 		//everything is fillable by default
@@ -100,8 +95,6 @@ CREATE TABLE `app_countyhealth`.`healthdept_url` (
   `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
   `search_term` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
   `healthdept_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 */
